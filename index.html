@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CatLab AI - Autonomous Laboratory Platform</title>
+    <meta name="description" content="Accelerating catalyst discovery 100x with AI-driven laboratory automation">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #0a0a0a;
+            min-height: 100vh;
+            color: white;
+            overflow-x: hidden;
+            position: relative;
+        }
+        
+        /* Animated background */
+        .bg-animation {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: 0;
+            background: linear-gradient(125deg, #0a0a0a 0%, #1a0033 50%, #0a0a0a 100%);
+            opacity: 1;
+        }
+        
+        .bg-animation::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(138, 43, 226, 0.1) 0%, transparent 70%);
+            animation: rotate 30s linear infinite;
+        }
+        
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        
+        /* Floating particles */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+        
+        .particle {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: rgba(138, 43, 226, 0.5);
+            border-radius: 50%;
+            animation: floatUp 15s infinite linear;
+        }
+        
+        @keyframes floatUp {
+            from {
+                transform: translateY(100vh) translateX(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            to {
+                transform: translateY(-100vh) translateX(100px);
+                opacity: 0;
+            }
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            position: relative;
+            z-index: 10;
+        }
+        
+        /* Glowing logo */
+        .logo-container {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 40px;
+        }
+        
+        .logo {
+            font-size: 100px;
+            background: linear-gradient(45deg, #00ffff, #ff00ff, #00ffff);
+            background-size: 200% 200%;
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: gradient 3s ease infinite, float 4s ease-in-out infinite;
+            filter: drop-shadow(0 0 30px rgba(138, 43, 226, 0.5));
+        }
+        
+        @keyframes gradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotateZ(0deg); }
+            50% { transform: translateY(-20px) rotateZ(3deg); }
+        }
+        
+        h1 {
+            font-size: 72px;
+            font-weight: 900;
+            margin-bottom: 20px;
+            letter-spacing: -2px;
+            background: linear-gradient(to right, #fff 0%, #00ffff 50%, #fff 100%);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: shine 3s linear infinite;
+        }
+        
+        @keyframes shine {
+            to { background-position: 200% center; }
+        }
+        
+        .tagline {
+            font-size: 26px;
+            color: #a0a0a0;
+            margin-bottom: 60px;
+            line-height: 1.6;
+            font-weight: 300;
+            letter-spacing: 0.5px;
+        }
+        
+        .highlight {
+            color: #00ffff;
+            font-weight: 500;
+            text-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
+        }
+        
+        /* Holographic cards */
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin: 80px 0;
+        }
+        
+        .feature {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.02) 100%);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 40px 30px;
+            border-radius: 20px;
+            backdrop-filter: blur(20px);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .feature::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, #00ffff, #ff00ff, #00ffff);
+            border-radius: 20px;
+            opacity: 0;
+            z-index: -1;
+            transition: opacity 0.3s;
+        }
+        
+        .feature:hover {
+            transform: translateY(-10px) scale(1.02);
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
+            box-shadow: 0 20px 40px rgba(138, 43, 226, 0.3);
+        }
+        
+        .feature:hover::before {
+            opacity: 0.5;
+        }
+        
+        .feature-icon {
+            font-size: 60px;
+            margin-bottom: 20px;
+            display: block;
+            filter: drop-shadow(0 0 20px currentColor);
+        }
+        
+        .feature-title {
+            font-size: 24px;
+            margin-bottom: 15px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+        
+        .feature-desc {
+            font-size: 16px;
+            color: #a0a0a0;
+            line-height: 1.6;
+        }
+        
+        /* Futuristic CTA */
+        .cta {
+            margin-top: 80px;
+            text-align: center;
+        }
+        
+        .status {
+            display: inline-block;
+            padding: 20px 40px;
+            background: linear-gradient(135deg, rgba(138, 43, 226, 0.2) 0%, rgba(0, 255, 255, 0.2) 100%);
+            border: 2px solid rgba(138, 43, 226, 0.5);
+            border-radius: 100px;
+            font-size: 20px;
+            font-weight: 600;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s;
+        }
+        
+        .status:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 50px rgba(138, 43, 226, 0.5);
+        }
+        
+        .status::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(138, 43, 226, 0.3) 0%, transparent 70%);
+            transform: translate(-50%, -50%);
+            animation: pulse-glow 2s ease-out infinite;
+        }
+        
+        @keyframes pulse-glow {
+            0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0; }
+            50% { transform: translate(-50%, -50%) scale(2); opacity: 1; }
+        }
+        
+        .badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #00ff88 0%, #00ffff 100%);
+            color: #000;
+            padding: 10px 25px;
+            border-radius: 50px;
+            font-size: 16px;
+            font-weight: 700;
+            margin-top: 30px;
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+        
+        @keyframes glow {
+            from { box-shadow: 0 0 20px rgba(0, 255, 136, 0.5); }
+            to { box-shadow: 0 0 30px rgba(0, 255, 255, 0.8); }
+        }
+        
+        /* Contact section */
+        .contact {
+            margin-top: 60px;
+            padding: 40px;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0.01) 100%);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+        }
+        
+        .contact p {
+            font-size: 18px;
+            line-height: 1.8;
+            color: #a0a0a0;
+        }
+        
+        .contact a {
+            color: #00ffff;
+            text-decoration: none;
+            position: relative;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+        
+        .contact a::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, #00ffff, #ff00ff);
+            transform: scaleX(0);
+            transform-origin: right;
+            transition: transform 0.3s;
+        }
+        
+        .contact a:hover::after {
+            transform: scaleX(1);
+            transform-origin: left;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            h1 { font-size: 48px; }
+            .tagline { font-size: 20px; }
+            .features { grid-template-columns: 1fr; }
+            .feature { padding: 30px 20px; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Animated background -->
+    <div class="bg-animation"></div>
+    
+    <!-- Floating particles -->
+    <div class="particles">
+        <div class="particle" style="left: 10%; animation-delay: 0s;"></div>
+        <div class="particle" style="left: 20%; animation-delay: 3s;"></div>
+        <div class="particle" style="left: 35%; animation-delay: 2s;"></div>
+        <div class="particle" style="left: 50%; animation-delay: 5s;"></div>
+        <div class="particle" style="left: 65%; animation-delay: 1s;"></div>
+        <div class="particle" style="left: 80%; animation-delay: 4s;"></div>
+        <div class="particle" style="left: 90%; animation-delay: 6s;"></div>
+    </div>
+    
+    <div class="container">
+        <div class="logo-container">
+            <div class="logo">⚛️</div>
+        </div>
+        
+        <h1>CatLab AI</h1>
+        
+        <p class="tagline">
+            Accelerating catalyst discovery <span class="highlight">100x faster</span><br>
+            with AI-driven laboratory automation
+        </p>
+        
+        <div class="features">
+            <div class="feature">
+                <div class="feature-icon">⚡</div>
+                <div class="feature-title">100x Faster</div>
+                <div class="feature-desc">
+                    Reduce catalyst development from years to weeks with autonomous experimentation
+                </div>
+            </div>
+            
+            <div class="feature">
+                <div class="feature-icon">🎯</div>
+                <div class="feature-title">AI-Powered</div>
+                <div class="feature-desc">
+                    Natural language control and machine learning optimization of experiments
+                </div>
+            </div>
+            
+            <div class="feature">
+                <div class="feature-icon">💰</div>
+                <div class="feature-title">90% Cost Reduction</div>
+                <div class="feature-desc">
+                    Minimize waste and maximize efficiency with microfluidic automation
+                </div>
+            </div>
+        </div>
+        
+        <div class="cta">
+            <div class="status">
+                🚀 Currently Seeking EPFL Innogrant Funding
+            </div>
+            
+            <div class="badge">
+                ✓ Working Prototype Demonstrated
+            </div>
+        </div>
+        
+        <div class="contact">
+            <p>
+                Founder: Arkendu Roy<br>
+                Materials Scientist & Automation Expert<br>
+                <a href="mailto:hello@cat-lab.ai">hello@cat-lab.ai</a>
+            </p>
+        </div>
+    </div>
+</body>
+</html>
